@@ -39,6 +39,10 @@ class BotDispatcher(discord.Client):
         await self.clients[message.guild].on_message(message)
 
 
+#*  if you run commands such as stop or resume, the connect_deaf function logs that it is connecting to a voice channel when it
+#   is already connected
+#
+#*   stop doesn't clear the queue...
 class MusicBot(discord.Client):
     """
     The main bot functionality
@@ -73,7 +77,7 @@ class MusicBot(discord.Client):
         self.register_command(
             "disconnect", handler=self.disconnect, guarded_by=self.voice_lock
         )
-        self.register_command("queue", handler=self.queue)
+        self.register_command("queue", handler=self.show_queue)
 
         self.register_command("hello", handler=self.hello)
         self.register_command("countdown", handler=self.countdown)
@@ -221,7 +225,6 @@ class MusicBot(discord.Client):
         audio_source = discord.FFmpegPCMAudio(audio_url)
 
         if self.voice_client.is_playing():
-            logging.info("Pausing with HACK")
             self._stop()
 
         logging.info("Playing audio source")
@@ -340,7 +343,7 @@ class MusicBot(discord.Client):
         """
         voice_client = await self.get_voice_client(message)
         if voice_client:
-            voice_client.stop()
+            self._stop()
 
     async def pause(self, message, _command_content):
         """
