@@ -39,10 +39,10 @@ class BotDispatcher(discord.Client):
         await self.clients[message.guild].on_message(message)
 
 
-#*  if you run commands such as stop or resume, the connect_deaf function logs that it is connecting to a voice channel when it
-#   is already connected
+# * if you run commands such as stop or resume, the connect_deaf function logs that it
+#   is connecting to a voice channel when it is already connected
 #
-#*   stop doesn't clear the queue...
+# * stop doesn't clear the queue...
 class MusicBot(discord.Client):
     """
     The main bot functionality
